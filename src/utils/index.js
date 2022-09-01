@@ -2,6 +2,8 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+import app from "@/store/modules/app"
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -114,4 +116,26 @@ export function param2Obj(url) {
     }
   })
   return obj
+}
+
+/**
+ *  将列表型的数据转化为树形数据 => 递归算法 => 自身调用自身 => 一定条件不能一样，否则就死循环
+ *  遍历树形，一个重点，要先找到一个头
+ */
+export function tranListToTreeData (list, rootValue) {
+  var arr = []
+  list.forEach(item => {
+    if(item.pid === rootValue) {
+      // 找到之后，要去找item下面有没有子节点
+      // 得到的是以该item.id为pid的所有子节点
+      const children = tranListToTreeData(list, item.id)
+      if(children.length) {
+        // 如果children的长度大于0，说明找到子节点
+        item.children = children
+      }
+      // 将内容加入到数组中
+      arr.push(item)
+    }
+  })
+  return arr
 }
