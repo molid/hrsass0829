@@ -73,10 +73,9 @@ export const constantRoutes = [
       path: '', // 二级路由path什么都不写 表示二级默认路由
       component: () => import('@/views/import')
     }]
-  },
+  }
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 定义一个动态路由
@@ -96,7 +95,10 @@ const createRouter = () => new Router({
   scrollBehavior: () => ({ y: 0 }),
   // routes: constantRoutes
   // 静态路由与动态路由的合并
-  routes:[...constantRoutes, ...asyncRoutes]
+  // 经过权限路由刷选之后，默认路由表只有静态路由
+  // routes:[...constantRoutes, ...asyncRoutes]
+  routes:[...constantRoutes]
+  
 })
 
 const router = createRouter()

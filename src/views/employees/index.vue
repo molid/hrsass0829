@@ -10,7 +10,7 @@
         <template v-slot:after>
           <el-button size="small" type="success" @click="$router.push('/import?type=user')">excel导入</el-button>
           <el-button size="small" type="danger" @click="exportData">excel导出</el-button>
-          <el-button size="small" type="primary" @click="showDialog = true">新增员工</el-button>
+          <el-button size="small" type="primary" @click="showDialog = true" :disabled="!checkPermission('POINT-USER-ADD')">新增员工</el-button>
         </template>
       </page-tools>
       <!-- 放置表格和分页 -->
@@ -46,7 +46,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)">角色</el-button>
               <el-button type="text" size="small" @click="delEmployee(row.id)">删除</el-button>
             </template>
           </el-table-column>
@@ -65,6 +65,8 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+    <!-- 放置分配角色的组件 -->
+    <assign-role ref="assignRole" :show-role-dialog.sync="showRoleDialog" :user-id="userId" />
   </div>
 </template>
 
@@ -74,12 +76,14 @@
   import EmployeeEnum from '@/api/constant/employees'
   import AddEmployee from './components/add-employee'
   import { formatDate } from '@/filters'
+  import AssignRole from './components/assign-role'
   // 生成二维码的包
   import QrCode from 'qrcode'
 
   export default {
     components: {
-      AddEmployee
+      AddEmployee,
+      AssignRole
     },
     data() {
       return {
@@ -91,7 +95,9 @@
         },
         loading: false, //显示遮盖层
         showDialog: false, //控制新增弹出层的关闭与显示
-        showCodeDialog: false //控制显示二维码弹出层
+        showCodeDialog: false, //控制显示二维码弹出层
+        showRoleDialog: false, //控制显示分配角色的弹出层显示
+        userId: null, // 定义一个userId
       }
     },
     created() {
@@ -187,6 +193,13 @@
         } else {
           this.$message.warning('该用户还未上传头像')
         }
+      },
+      editRole(id) {
+        // props赋值渲染异步的
+        this.userId = id
+        this.$refs.assignRole.getUserDetailById(id)
+        this.showRoleDialog = true
+
       }
     }
   }
