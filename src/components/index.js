@@ -3,6 +3,10 @@ import PageTools from './PageTools'
 import UploadExcel from './UploadExcel'
 import ImageUpload from './ImageUpload'
 import Print from 'vue-print-nb'
+import ScreenFull from './ScreenFull'
+import ThemePicker from './ThemePicker'
+import LangSelect from './Lang'
+import TagsView from './TagsView'
 export default {
   /* 
     Vue.use({
@@ -19,5 +23,9 @@ export default {
     Vue.component('UploadExcel', UploadExcel)
     Vue.component('ImageUpload', ImageUpload)
     Vue.use(Print)
+    Vue.component('ScreenFull',ScreenFull)
+    Vue.component('ThemePicker', ThemePicker)
+    Vue.component('LangSelect', LangSelect) //组件的注册
+    Vue.component('TagsView', TagsView)
   }
 }
