@@ -93,7 +93,9 @@ export const asyncRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  // 打包上线需要将使用history模式
+  mode: 'history', // require service support
+  base: 'hr', //配置默认的前缀地址
   scrollBehavior: () => ({ y: 0 }),
   // routes: constantRoutes
   // 静态路由与动态路由的合并
